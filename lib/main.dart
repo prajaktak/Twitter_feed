@@ -44,8 +44,8 @@ class HomePageState extends State<HomePage>{
       "statuses/user_timeline.json", 
       // The options for the request
       options: {
-        "user_id": "19025957",
-        "screen_name": "TTCnotices",
+        "user_id": "96678665",
+        "screen_name": "kPrajakta",
         "count": "20",
         "trim_user": "true",
         "tweet_mode": "extended", // Used to prevent truncating tweets
@@ -55,7 +55,7 @@ class HomePageState extends State<HomePage>{
     var res = await twitterRequest;
 
     print(res.statusCode); 
-    print(res.body);
+    //print(res.body);
 
     var tweets = json.decode(res.body);
     print(tweets);
