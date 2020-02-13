@@ -24,6 +24,8 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage>{
+  
+  List tweets;
   Future<String> getFeeds() async{
     String consumerApiKey = "UoA2TXUyi0NngaW5a7aUqsRgx";
     String consumerApiSecret = "FN5mxRQcJ0nsXEnPxzTqt03zqRq5UIJqaxQOlciDoTbA8D0Ehi";
@@ -41,7 +43,8 @@ class HomePageState extends State<HomePage>{
       // Http Method
       "GET", 
       // Endpoint you are trying to reach
-      "statuses/user_timeline.json", 
+      //"statuses/user_timeline.json",
+      "statuses/home_timeline.json", 
       // The options for the request
       options: {
         "user_id": "96678665",
@@ -55,9 +58,11 @@ class HomePageState extends State<HomePage>{
     var res = await twitterRequest;
 
     print(res.statusCode); 
-    //print(res.body);
-
-    var tweets = json.decode(res.body);
+    print(res.body);
+    this.setState(() {
+      tweets = json.decode(res.body);
+    });
+    
     print(tweets);
 
 
@@ -71,17 +76,41 @@ class HomePageState extends State<HomePage>{
 
     // print(response.body);
   }
+  @override
+  void initState(){
+   this.getFeeds();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      body: new Center(
-        child: new RaisedButton(
-          child: new Text("Get Feeds"),
-          onPressed: getFeeds,
-        )
-      ),
+    return Scaffold(
+      appBar: new AppBar(
+        title: new Text("ListView"),
+        ),
+        body: new ListView.builder(
+          itemCount: tweets == null? 0:tweets.length,
+          itemBuilder: (BuildContext context, int index){
+           return ListTile(
+            //  leading: CircleAvatar(
+            //    backgroundImage: NetworkImage(
+            //      //tweets[index][]
+            //  ),
+             title: Text(tweets[index]["full_text"]),
+            );
+          }
+        ),
     );
   }
+  // @override
+  // Widget build(BuildContext context) {
+  //   return new Scaffold(
+  //     body: new Center(
+  //       child: new RaisedButton(
+  //         child: new Text("Get Feeds"),
+  //         onPressed: getFeeds,
+  //       )
+  //     ),
+  //   );
+  // }
 
 }
